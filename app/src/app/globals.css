@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-headline: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* L7X BOUTIK | Ultra-Dark Tech Editorial */
+  --color-surface: #0e0e0e;
+  --color-on-surface: #ffffff;
+  --color-on-surface-variant: #ababab;
+  --color-primary: #cc97ff;
+  --color-primary-dim: #9c48ea;
+  --color-secondary: #e197fc;
+  --color-outline: #757575;
+  --color-outline-variant: #484848;
+  
+  --color-surface-container: #191919;
+  --color-surface-container-low: #131313;
+  --color-surface-container-high: #1f1f1f;
+  --color-surface-container-highest: #262626;
+  --color-surface-container-lowest: #000000;
+}
+
+/* Global reset and base styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: #0e0e0e;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Custom Design Components from code.html */
+.headline-anchor {
+  font-family: 'Space Grotesk';
+  letter-spacing: -0.05em;
+}
+
+.aura-shadow:hover {
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
+}
+
+.glass-card {
+  background: rgba(25, 25, 25, 0.4);
+  backdrop-filter: blur(20px);
+}
+
+.neon-glow {
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.4), 0 0 20px rgba(168, 85, 247, 0.2);
+}
+
+@keyframes horizontal-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.neon-divider-animated {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(90deg, transparent, #A855F7, transparent);
+  background-size: 200% 100%;
+}
+
+.neon-divider-animated:hover {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+  transform: scaleX(1.05);
+  animation: horizontal-shimmer 2s infinite linear;
+  background: linear-gradient(90deg, rgba(168,85,247,0.2), #A855F7, rgba(168,85,247,0.2));
+  background-size: 200% 100%;
+}
+
+/* Scroll Reveal Styles */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Selection */
+::selection {
+  background: #cc97ff;
+  color: #000000;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #131313; }
+::-webkit-scrollbar-thumb { background: #484848; }
+::-webkit-scrollbar-thumb:hover { background: #cc97ff; }
