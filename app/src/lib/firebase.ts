@@ -1,5 +1,5 @@
-import { initializeApp, getApps } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { initializeApp, getApps } from "firebase/app";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -10,6 +10,13 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+// Check for placeholder keys
+if (typeof window !== "undefined" && firebaseConfig.apiKey === "your_firebase_api_key") {
+  console.warn("⚠️ Firebase keys are missing/placeholders in .env.local. Authentication will not work properly.");
+}
+
+// Prevent re-initialization in Next.js hot reload
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+
 export const auth = getAuth(app);
 export default app;
