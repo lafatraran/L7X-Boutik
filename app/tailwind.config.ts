@@ -9,87 +9,38 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        // L7X BOUTIK | Ultra-Dark Tech Editorial - New Design Tokens from code.html
-        "tertiary": "#ff95a0",
-        "on-tertiary-fixed": "#39000d",
-        "surface": "#0e0e0e",
-        "on-tertiary-fixed-variant": "#711227",
-        "primary-fixed-dim": "#b971ff",
-        "on-primary-fixed-variant": "#430076",
-        "inverse-primary": "#842cd3",
-        "secondary-container": "#6a2785",
-        "tertiary-fixed-dim": "#fa7c8b",
-        "surface-container-highest": "#262626",
-        "surface-container-low": "#131313",
-        "inverse-surface": "#f9f9f9",
-        "on-secondary": "#530b6f",
-        "surface-dim": "#0e0e0e",
-        "error": "#ff6e84",
-        "on-surface-variant": "#ababab",
-        "tertiary-dim": "#f47786",
-        "primary": "#cc97ff",
-        "inverse-on-surface": "#555555",
-        "on-primary-container": "#360061",
-        "surface-variant": "#262626",
-        "on-tertiary-container": "#570018",
-        "surface-container": "#191919",
-        "secondary": "#e197fc",
-        "on-error": "#490013",
-        "on-secondary-container": "#f1bfff",
-        "on-primary": "#47007c",
-        "on-error-container": "#ffb2b9",
-        "surface-container-lowest": "#000000",
-        "error-container": "#a70138",
-        "surface-container-high": "#1f1f1f",
-        "outline": "#757575",
-        "error-dim": "#d73357",
-        "primary-fixed": "#c284ff",
-        "tertiary-container": "#fe7e8e",
-        "on-surface": "#ffffff",
-        "on-background": "#ffffff",
-        "on-tertiary": "#680921",
-        "outline-variant": "#484848",
-        "on-secondary-fixed": "#550e71",
-        "surface-bright": "#2c2c2c",
-        "secondary-fixed-dim": "#ebaeff",
-        "background": "#0e0e0e",
-        "surface-tint": "#cc97ff",
-        "on-primary-fixed": "#000000",
-        "primary-container": "#c284ff",
-        "secondary-dim": "#d28aed",
-        "secondary-fixed": "#f1c1ff",
-        "primary-fixed-variant": "#430076",
-        "primary-dim": "#9c48ea",
-        "tertiary-fixed": "#ff909c",
-        "on-secondary-fixed-variant": "#753290",
-
-        // Keep legacy cyber for other pages if needed
-        cyber: {
-          cyan: "#00E5FF",
-          "cyan-dim": "#00D4EC",
-          "cyan-glow": "rgba(0, 227, 253, 0.25)",
-        },
-      },
       fontFamily: {
-        "headline": ["Space Grotesk", "system-ui", "sans-serif"],
-        "body": ["Inter", "system-ui", "sans-serif"],
-        "label": ["Inter", "system-ui", "sans-serif"],
-        sans: ["Inter", "system-ui", "sans-serif"],
-        display: ["Space Grotesk", "system-ui", "sans-serif"],
+        display: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
-      borderRadius: {
-        "DEFAULT": "1rem",
-        "lg": "2rem",
-        "xl": "3rem",
-        "full": "9999px"
+      colors: {
+        primary: {
+          DEFAULT: "#cc97ff",
+          foreground: "#000000",
+        },
+        surface: {
+          DEFAULT: "#000000",
+          low: "#0e0e0e",
+          lowest: "#080808",
+        },
+        onSurface: {
+          DEFAULT: "#ffffff",
+          variant: "#a0a0a0",
+        },
+        outline: {
+          DEFAULT: "#1a1a1a",
+          variant: "#2a2a2a",
+        }
       },
       letterSpacing: {
-        tightest: "-0.05em",
+        tightest: "-0.04em",
+      },
+      backgroundImage: {
+        "cyber-gradient": "linear-gradient(135deg, #cc97ff 0%, #7000ff 100%)",
+        "dark-gradient": "linear-gradient(to bottom, #000000 0%, #0e0e0e 100%)",
       },
     },
   },
   plugins: [],
 };
-
 export default config;
