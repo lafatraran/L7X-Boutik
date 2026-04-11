@@ -207,7 +207,7 @@ export default function AccountPage() {
                       </div>
                       <div className="text-right shrink-0">
                         <p className="font-display font-black text-lg text-onSurface">
-                          {order.total_amount.toLocaleString("fr-FR")} €
+                          {new Intl.NumberFormat("fr-FR").format(order.total_amount * 5000)} Ar
                         </p>
                       </div>
                     </div>
