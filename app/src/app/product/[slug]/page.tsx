@@ -145,7 +145,7 @@ export default async function ProductDetailPage({ params }: Props) {
           {/* Guarantees */}
           <div className="border-t border-outlineVariant/30 pt-6 space-y-3">
             {[
-              "Livraison offerte dès 99€",
+              "Livraison offerte dès 500.000 Ar",
               "Retours gratuits sous 30 jours",
               "Garantie constructeur 2 ans",
               "Paiement sécurisé",
