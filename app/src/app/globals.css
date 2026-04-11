@@ -7,19 +7,19 @@
   --font-body: "Inter", system-ui, sans-serif;
 
   /* L7X BOUTIK | Ultra-Dark Tech Editorial */
-  --color-surface: #0e0e0e;
+  --color-surface: #000000;
   --color-on-surface: #ffffff;
   --color-on-surface-variant: #ababab;
-  --color-primary: #cc97ff;
-  --color-primary-dim: #9c48ea;
+  --color-primary: #A855F7;
+  --color-primary-dim: #7c2dcf;
   --color-secondary: #e197fc;
   --color-outline: #757575;
   --color-outline-variant: #484848;
   
-  --color-surface-container: #191919;
-  --color-surface-container-low: #131313;
-  --color-surface-container-high: #1f1f1f;
-  --color-surface-container-highest: #262626;
+  --color-surface-container: #080808;
+  --color-surface-container-low: #050505;
+  --color-surface-container-high: #0c0c0c;
+  --color-surface-container-highest: #121212;
   --color-surface-container-lowest: #000000;
 }
 
@@ -63,6 +63,25 @@ body {
   text-shadow: 0 0 10px rgba(168, 85, 247, 0.4), 0 0 20px rgba(168, 85, 247, 0.2);
 }
 
+.product-card {
+  background: #080808;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover {
+  border-color: rgba(168, 85, 247, 0.3);
+  background: #0C0C0C;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.quantum-glow {
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
+}
+
 @keyframes horizontal-shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -93,6 +112,14 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Legacy animations if still used */
+@keyframes glowPulse {
+  0% { box-shadow: 0px 0px 10px 0px rgba(0, 227, 253, 0.15); }
+  100% { box-shadow: 0px 0px 30px 0px rgba(0, 227, 253, 0.45); }
+}
+
+.animate-glow-pulse { animation: glowPulse 2s ease-in-out infinite alternate; }
 
 /* Selection */
 ::selection {
