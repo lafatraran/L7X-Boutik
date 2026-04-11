@@ -1,108 +1,204 @@
 'use client';
 
 import Image from "next/image";
+import { useCartStore } from "@/store/cartStore";
+import type { Product } from "@/lib/supabase";
+
+// ── Les 8 produits EXACTS de code.html ──────────────────────
+// price = Ariary / 5000 (CartDrawer multiplie par 5000 pour afficher)
+type StaticProduct = Product & {
+  img: string;          // alias visuel (= image_url)
+  alt: string;
+  rating: string;
+  reviews: string;
+  priceLabel: string;   // affichage Ariary formaté
+  storage: string[];
+  selected: string;
+};
 
 // ── Les 8 produits EXACTS de code.html ────────────────────────────────────────
-const CODE_HTML_PRODUCTS = [
+const CODE_HTML_PRODUCTS: StaticProduct[] = [
   {
-    id: 1,
+    id: "mobile-1",
+    slug: "iphone-17-pro",
+    description: "Le dernier iPhone Pro d'Apple",
+    category: "mobile",
+    images: [],
+    specs: {},
+    stock: 10,
+    is_featured: true,
+    created_at: "",
     img: "https://lh3.googleusercontent.com/aida/ADBb0ujEZyqF1syur9oGPFPiiNbOmUpwGlV0A3iM5FPmBYv4xCV0g5pwiLw8z7Y2QFBktQgnOXwvgbbW0ITrs-t0oZE4fMpjq9jz2IvuTDbanfyfCt0kE4y88-SZGdzm4VUjmh4XcQWH65TGMpz-eJpsenDWc-dj2AcZtRz6hO0jZn0nxH8YXqSIwIKBZx2rx0vBsN39TZsTbSU5__2VEvqkoBskUSLBnys6K3XqPNSOWTXUefUexg51bN6j6LGnXdG0EM_2kzuRsSG1skU",
+    image_url: "https://lh3.googleusercontent.com/aida/ADBb0ujEZyqF1syur9oGPFPiiNbOmUpwGlV0A3iM5FPmBYv4xCV0g5pwiLw8z7Y2QFBktQgnOXwvgbbW0ITrs-t0oZE4fMpjq9jz2IvuTDbanfyfCt0kE4y88-SZGdzm4VUjmh4XcQWH65TGMpz-eJpsenDWc-dj2AcZtRz6hO0jZn0nxH8YXqSIwIKBZx2rx0vBsN39TZsTbSU5__2VEvqkoBskUSLBnys6K3XqPNSOWTXUefUexg51bN6j6LGnXdG0EM_2kzuRsSG1skU",
     alt: "iPhone 17 Pro",
     brand: "L7X",
     rating: "4.9",
     reviews: "2.4k",
     name: "iPhone 17 Pro",
-    price: "7.000.000 Ar",
+    price: 1400,        // 7 000 000 Ar ÷ 5000
+    priceLabel: "7.000.000 Ar",
     storage: ["128", "256", "512"],
     selected: "256",
   },
   {
-    id: 2,
+    id: "mobile-2",
+    slug: "galaxy-s25-ultra",
+    description: "Le Samsung Galaxy S25 Ultra",
+    category: "mobile",
+    images: [],
+    specs: {},
+    stock: 10,
+    is_featured: true,
+    created_at: "",
     img: "https://lh3.googleusercontent.com/aida/ADBb0uhZSssQd348gc-f2_T1p76N-t1-S1BY0uMfqOptr3uruLHzGLngTcj6gscyd2_WNFlpoO-6y7HDeJbtc1yAGC7rMgEQgzixyUxjwgo08ZmQQVNlp9_FqoPY__OQ-EAAGeBEDTBKAUAuN4ZNioadmUaQb7B9AXRY8w5k5wAcRv2U9R20jXFjtA-LrFQQow7yH0uTjF6DajZFLRqc_iCYo-Uz7cEIZSoUcAi0cIWaq8CtZTl-8hlttK-wpbE_7g8lP_5C0X-Lm3OXFEg",
+    image_url: "https://lh3.googleusercontent.com/aida/ADBb0uhZSssQd348gc-f2_T1p76N-t1-S1BY0uMfqOptr3uruLHzGLngTcj6gscyd2_WNFlpoO-6y7HDeJbtc1yAGC7rMgEQgzixyUxjwgo08ZmQQVNlp9_FqoPY__OQ-EAAGeBEDTBKAUAuN4ZNioadmUaQb7B9AXRY8w5k5wAcRv2U9R20jXFjtA-LrFQQow7yH0uTjF6DajZFLRqc_iCYo-Uz7cEIZSoUcAi0cIWaq8CtZTl-8hlttK-wpbE_7g8lP_5C0X-Lm3OXFEg",
     alt: "Galaxy S25 Ultra",
     brand: "SAMSUNG",
     rating: "4.8",
     reviews: "1.8k",
     name: "Galaxy S25 Ultra",
-    price: "4.400.000 Ar",
+    price: 880,         // 4 400 000 Ar ÷ 5000
+    priceLabel: "4.400.000 Ar",
     storage: ["256", "512", "1TB"],
     selected: "512",
   },
   {
-    id: 3,
+    id: "mobile-3",
+    slug: "pixel-9-pro",
+    description: "Le Google Pixel 9 Pro",
+    category: "mobile",
+    images: [],
+    specs: {},
+    stock: 10,
+    is_featured: true,
+    created_at: "",
     img: "https://lh3.googleusercontent.com/aida/ADBb0ughUF0QzSzFNuqaAdURPO4YoDgjR9LVRRh7GSfg8ia2HSjHfIK2a9DE-B2_oJc2kDEJ82_4kLFVGDDO1LEthVr3XFxWyZeqPYVv0b_15lFJHfvC3zb9hiGhaQnNRnfyXOumIeqQfLtvM4Wa6akMahxDHkVH2PpEvRuz0ckgTDXv_QpJnJV5Wy-dL00PwNUxK9tyz3G4Nc_TZHmEaUKQvxuHCnmj-hUqecg6v7OlBBRDGIFq1pPj0xlxujawrjaKMfj2x6qeEkekDu4",
+    image_url: "https://lh3.googleusercontent.com/aida/ADBb0ughUF0QzSzFNuqaAdURPO4YoDgjR9LVRRh7GSfg8ia2HSjHfIK2a9DE-B2_oJc2kDEJ82_4kLFVGDDO1LEthVr3XFxWyZeqPYVv0b_15lFJHfvC3zb9hiGhaQnNRnfyXOumIeqQfLtvM4Wa6akMahxDHkVH2PpEvRuz0ckgTDXv_QpJnJV5Wy-dL00PwNUxK9tyz3G4Nc_TZHmEaUKQvxuHCnmj-hUqecg6v7OlBBRDGIFq1pPj0xlxujawrjaKMfj2x6qeEkekDu4",
     alt: "Pixel 9 Pro",
     brand: "GOOGLE",
     rating: "4.7",
     reviews: "945",
     name: "Pixel 9 Pro",
-    price: "6.500.000 Ar",
+    price: 1300,        // 6 500 000 Ar ÷ 5000
+    priceLabel: "6.500.000 Ar",
     storage: ["128", "256", "512"],
     selected: "128",
   },
   {
-    id: 4,
+    id: "mobile-4",
+    slug: "nothing-phone-3",
+    description: "Le Nothing Phone (3)",
+    category: "mobile",
+    images: [],
+    specs: {},
+    stock: 10,
+    is_featured: false,
+    created_at: "",
     img: "https://lh3.googleusercontent.com/aida/ADBb0uh3xt0235jX_8iMX-iX8eunO1LORUqFLC_-d5p7A4xX1Dl6aT4csaDhywd95BKBhYkoA7G4O6hfW59fPZ-6i3E0VNrBgm5rUS4gHwJnsuZQC_K0p6_Okl2W6_vTGNFGbq_odlwp5Gn-Xif364iHsBSf4PlO3sgHw3nvrMds5LmaM4MukK09UG1i5Cadwv0WzrXpekCfdZFbZs5Gs1iZfQakW0DU4A-9vRUPV_3z9H0JwE3rpinQU04OsTLv6Mj8OtNmbKyomttkfB4",
+    image_url: "https://lh3.googleusercontent.com/aida/ADBb0uh3xt0235jX_8iMX-iX8eunO1LORUqFLC_-d5p7A4xX1Dl6aT4csaDhywd95BKBhYkoA7G4O6hfW59fPZ-6i3E0VNrBgm5rUS4gHwJnsuZQC_K0p6_Okl2W6_vTGNFGbq_odlwp5Gn-Xif364iHsBSf4PlO3sgHw3nvrMds5LmaM4MukK09UG1i5Cadwv0WzrXpekCfdZFbZs5Gs1iZfQakW0DU4A-9vRUPV_3z9H0JwE3rpinQU04OsTLv6Mj8OtNmbKyomttkfB4",
     alt: "Nothing Phone (3)",
     brand: "NOTHING",
     rating: "4.6",
     reviews: "1.2k",
     name: "Nothing Phone (3)",
-    price: "2.900.000 Ar",
+    price: 580,         // 2 900 000 Ar ÷ 5000
+    priceLabel: "2.900.000 Ar",
     storage: ["128", "256", "512"],
     selected: "256",
   },
   {
-    id: 5,
+    id: "mobile-5",
+    slug: "xperia-1-mark-4",
+    description: "Le Sony Xperia 1 Mark 4",
+    category: "mobile",
+    images: [],
+    specs: {},
+    stock: 10,
+    is_featured: false,
+    created_at: "",
     img: "https://lh3.googleusercontent.com/aida/ADBb0ujNQ3Vx-9EN4YQ_XyGRr15_5dAJc_mKhQxODAuRyr7epxPSpCHz8FHgD07X7AZzUMoq3Xx6xhA8mq0u7yX1N7SzDz5bcz1mW0U4bn-tRy0rBQhtYvyRs5-TgS66oeec56u2uTmdiRgJHKBsOhIbnKHV1e3v4sK4NVymIzuoch0bwYtqihaBue1PfGx2baiProAamYC-Ye32lBQlxCkpc8dk1NliFiPqwxJmAdG92ghALxQzSEHOYjYYvExp5ktmD8LmH9-DgwXucAM",
+    image_url: "https://lh3.googleusercontent.com/aida/ADBb0ujNQ3Vx-9EN4YQ_XyGRr15_5dAJc_mKhQxODAuRyr7epxPSpCHz8FHgD07X7AZzUMoq3Xx6xhA8mq0u7yX1N7SzDz5bcz1mW0U4bn-tRy0rBQhtYvyRs5-TgS66oeec56u2uTmdiRgJHKBsOhIbnKHV1e3v4sK4NVymIzuoch0bwYtqihaBue1PfGx2baiProAamYC-Ye32lBQlxCkpc8dk1NliFiPqwxJmAdG92ghALxQzSEHOYjYYvExp5ktmD8LmH9-DgwXucAM",
     alt: "Xperia 1 Mark 4",
     brand: "SONY",
     rating: "4.9",
     reviews: "412",
     name: "Xperia 1 Mark 4",
-    price: "1.500.000 Ar",
+    price: 300,         // 1 500 000 Ar ÷ 5000
+    priceLabel: "1.500.000 Ar",
     storage: ["256", "512", "1TB"],
     selected: "512",
   },
   {
-    id: 6,
+    id: "mobile-6",
+    slug: "galaxy-z-flip-6",
+    description: "Le Samsung Galaxy Z Flip 6",
+    category: "mobile",
+    images: [],
+    specs: {},
+    stock: 10,
+    is_featured: false,
+    created_at: "",
     img: "https://lh3.googleusercontent.com/aida/ADBb0ug2Kbp4tUVrqZLfD5D94NYRkblKDzbyhiKiHP8_AXLaA120wciuVhxLS1bppet8E0D7C3zuIUY2Ne5pjjLVHQR3BqDj2l9OlniPttX9ocN2BNBLTWnPTwhFSfKlsskbJF_ipVMhbyVlw8jCFXm0mDj6wih9ku3ZwDX3sWLeeYXoWOoKL-ET0FE5zFz90xxdn28CDPonRdJR3oWw_8vQV_ZCleEVkVYnw3zzWJm1kl7Co2FEBHt4HBlY-Rpk-wjVKvWzjooJ2MdVUcY",
+    image_url: "https://lh3.googleusercontent.com/aida/ADBb0ug2Kbp4tUVrqZLfD5D94NYRkblKDzbyhiKiHP8_AXLaA120wciuVhxLS1bppet8E0D7C3zuIUY2Ne5pjjLVHQR3BqDj2l9OlniPttX9ocN2BNBLTWnPTwhFSfKlsskbJF_ipVMhbyVlw8jCFXm0mDj6wih9ku3ZwDX3sWLeeYXoWOoKL-ET0FE5zFz90xxdn28CDPonRdJR3oWw_8vQV_ZCleEVkVYnw3zzWJm1kl7Co2FEBHt4HBlY-Rpk-wjVKvWzjooJ2MdVUcY",
     alt: "Galaxy Z Flip 6",
     brand: "SAMSUNG",
     rating: "4.5",
     reviews: "2.1k",
     name: "Galaxy Z Flip 6",
-    price: "2.350.000 Ar",
+    price: 470,         // 2 350 000 Ar ÷ 5000
+    priceLabel: "2.350.000 Ar",
     storage: ["256", "512"],
     selected: "256",
   },
   {
-    id: 7,
+    id: "mobile-7",
+    slug: "redmi-k70-ultra",
+    description: "Le Redmi K70 Ultra",
+    category: "mobile",
+    images: [],
+    specs: {},
+    stock: 10,
+    is_featured: false,
+    created_at: "",
     img: "https://lh3.googleusercontent.com/aida/ADBb0ugjd64T9tGasF9CYk_9b6yzU1-XzH5HJpjGTLF3k7dyxGQBx7WncMtSzU9fgw5Z9vsK2oIu-eW2GfEm1sDZfTvJFD7UtLkSvrb_1_IB4cZeKQvHbEF8SCAFO-ImVw7GA7mPGXX6pi-YyhpUY6M4i1EtJnmroO7hb8fpsITppBqdt59T8h8Rw_6vas_2bk8_94bVF5n6Re2BgTva39IVjATuED1vq7IoCGIAMSL7u4E_D7TeFC2yMHquBJqB07W6rFDygN8CXyIunQ",
+    image_url: "https://lh3.googleusercontent.com/aida/ADBb0ugjd64T9tGasF9CYk_9b6yzU1-XzH5HJpjGTLF3k7dyxGQBx7WncMtSzU9fgw5Z9vsK2oIu-eW2GfEm1sDZfTvJFD7UtLkSvrb_1_IB4cZeKQvHbEF8SCAFO-ImVw7GA7mPGXX6pi-YyhpUY6M4i1EtJnmroO7hb8fpsITppBqdt59T8h8Rw_6vas_2bk8_94bVF5n6Re2BgTva39IVjATuED1vq7IoCGIAMSL7u4E_D7TeFC2yMHquBJqB07W6rFDygN8CXyIunQ",
     alt: "Redmi k70 Ultra",
-    brand: "SAMSUNG",
+    brand: "XIAOMI",
     rating: "4.9",
     reviews: "1.1k",
     name: "Redmi k70 Ultra",
-    price: "1.150.000 Ar",
+    price: 230,         // 1 150 000 Ar ÷ 5000
+    priceLabel: "1.150.000 Ar",
     storage: ["256", "512", "1TB"],
     selected: "512",
   },
   {
-    id: 8,
+    id: "mobile-8",
+    slug: "vivo-x300-pro",
+    description: "Le Vivo x300 Pro",
+    category: "mobile",
+    images: [],
+    specs: {},
+    stock: 10,
+    is_featured: false,
+    created_at: "",
     img: "https://lh3.googleusercontent.com/aida/ADBb0ujooKGhjMfXJmj6Ff-1WV3xNMHMVkSekCJg3dbaV8-A1_bhxbZ3iJLa9FMzMLIWs2BxQhzmiAN2pA4UikVq7jPOGZkgzOvNj3ViukJKZwSc83ANNAg4vKMvNMUkPV82jaMgtBMwZd_VQNdV5k0D-pMmpO7yQEGZt0_3ttwO7gG_nqU4SXOh6snBMIJJRwKC0Tcc6RY5Chs7_y71uJL596S-IHue_QOsooFfFxESPEyAE2qXZKPO2ihUpjQRb2qwMYneiQkhOe7TYpk",
+    image_url: "https://lh3.googleusercontent.com/aida/ADBb0ujooKGhjMfXJmj6Ff-1WV3xNMHMVkSekCJg3dbaV8-A1_bhxbZ3iJLa9FMzMLIWs2BxQhzmiAN2pA4UikVq7jPOGZkgzOvNj3ViukJKZwSc83ANNAg4vKMvNMUkPV82jaMgtBMwZd_VQNdV5k0D-pMmpO7yQEGZt0_3ttwO7gG_nqU4SXOh6snBMIJJRwKC0Tcc6RY5Chs7_y71uJL596S-IHue_QOsooFfFxESPEyAE2qXZKPO2ihUpjQRb2qwMYneiQkhOe7TYpk",
     alt: "Vivo x300 Pro",
-    brand: "GOOGLE",
+    brand: "VIVO",
     rating: "4.8",
     reviews: "856",
     name: "Vivo x300 Pro",
-    price: "4.500.000 Ar",
+    price: 900,         // 4 500 000 Ar ÷ 5000
+    priceLabel: "4.500.000 Ar",
     storage: ["128", "256", "512"],
     selected: "128",
   },
 ];
 
 export default function MobilePage() {
+  const addItem = useCartStore((s) => s.addItem);
+
   return (
     <main className="pt-24" style={{ backgroundColor: "#000000", color: "#ffffff", fontFamily: "'Space Grotesk', sans-serif" }}>
 
@@ -169,7 +265,7 @@ export default function MobilePage() {
                 {/* Name + Price */}
                 <div className="mb-6 flex-grow">
                   <h3 className="text-xl text-white tracking-tight mb-2 font-normal">{p.name}</h3>
-                  <p className="text-2xl font-black text-white">{p.price}</p>
+                  <p className="text-2xl font-black text-white">{p.priceLabel}</p>
                 </div>
                 {/* Storage selector */}
                 <div className="mb-8">
@@ -194,10 +290,14 @@ export default function MobilePage() {
                   <button
                     className="flex-grow text-white font-black py-4 rounded-full text-[10px] uppercase tracking-[0.2em] transition-all active:scale-[0.98] hover:shadow-[0_0_20px_rgba(168,85,247,0.4)]"
                     style={{ backgroundColor: "#A855F7" }}
+                    onClick={() => addItem(p)}
                   >
                     BUY NOW
                   </button>
-                  <button className="w-12 h-12 bg-white text-black rounded-xl flex items-center justify-center hover:bg-gray-200 transition-all active:scale-[0.98]">
+                  <button
+                    className="w-12 h-12 bg-white text-black rounded-xl flex items-center justify-center hover:bg-gray-200 transition-all active:scale-[0.98]"
+                    onClick={() => addItem(p)}
+                  >
                     <span className="material-symbols-outlined text-xl">shopping_cart</span>
                   </button>
                 </div>
