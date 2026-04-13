@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCartStore } from "@/store/cartStore";
+import Link from "next/link";
 import type { Product } from "@/lib/supabase";
 
 // ── Les 8 produits EXACTS de code.html ──────────────────────
@@ -225,7 +226,7 @@ export default function MobilePage() {
           <button className="px-8 py-3 bg-white/5 hover:bg-white/10 text-white rounded-full font-bold text-xs tracking-widest transition-all whitespace-nowrap">IOS</button>
           <button className="px-8 py-3 bg-white/5 hover:bg-white/10 text-white rounded-full font-bold text-xs tracking-widest transition-all whitespace-nowrap">ANDROID</button>
           <button className="px-8 py-3 bg-white/5 hover:bg-white/10 text-white rounded-full font-bold text-xs tracking-widest transition-all whitespace-nowrap">FOLDABLES</button>
-          <button className="px-8 py-3 bg-white/5 hover:bg-white/10 text-white rounded-full font-bold text-xs tracking-widest transition-all whitespace-nowrap">ACCESSORIES</button>
+          <Link href="/accessories" className="px-8 py-3 bg-white/5 hover:bg-white/10 text-white rounded-full font-bold text-xs tracking-widest transition-all whitespace-nowrap uppercase">ACCESSORIES</Link>
         </div>
       </section>
 
